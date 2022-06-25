@@ -1,0 +1,18 @@
+﻿@model Certificados.Models.Comerciantes
+
+@{
+    ViewBag.Title = "Resultado de la búsqueda";
+    Layout = "~/Views/Shared/_Layout TB.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <br />
+    <h4>No se ha encontrado resultados para el número de cédula: "@ViewBag.Data"</h4>
+    <hr />
+</div>
+<p>
+    <a href="~/Comerciantes/NuevaBusqueda" class="btn btn-primary btn-lg">Nueva Búsqueda &raquo;</a>
+    <a href="~/Home" class="btn btn-primary btn-lg">Regresar a Inicio</a>
+</p>

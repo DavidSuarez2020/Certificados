@@ -1,0 +1,75 @@
+﻿@model Certificados.Models.Comerciantes
+
+@{
+    ViewBag.Title = "Resultado de la búsqueda";
+    Layout = "~/Views/Shared/_Layout TB.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<br />
+<h4>Datos del comerciantes con cédula de ciudadanía No. @ViewBag.Data:</h4>
+<br />
+<div>
+    <h2>Por favor, antes de generar su certificado, revise sus datos:</h2>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Apellidos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Apellidos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cedula)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cedula)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Capacitacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Capacitacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Institucion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Institucion)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <p>
+        @Html.ActionLink("Generar PDF", "GenerarPDF", "Comerciantes", Model, new { @class = "btn btn-primary btn-lg" })
+        <a href="~/Comerciantes/NuevaBusqueda" class="btn btn-primary btn-lg">Nueva Búsqueda &raquo;</a>
+        <a href="~/Home" class="btn btn-primary btn-lg">Regresar a Inicio</a>
+    </p>
+    @*<div class="col-md-2">
+        @Html.ActionLink("Generar PDF", "GenerarPDF", "Comerciantes", null, new { @class = "btn btn-primary btn-lg" })
+    </div>
+    <div class="col-md-2">
+        <p><a href="~/Comerciantes/NuevaBusqueda" class="btn btn-primary btn-lg">Nueva Búsqueda &raquo;</a></p>
+    </div>
+    <div class="col-md-2">
+        <p><a href="~/Home" class="btn btn-primary btn-lg">Regresar a Inicio</a></p>
+    </div>
+    <div class="col-md-6"></div>*@
+    <br />
+</div>
