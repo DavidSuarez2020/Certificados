@@ -12,18 +12,15 @@ namespace Certificados.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Institucion
+    public partial class Certificados
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Institucion()
-        {
-            this.Comerciantes = new HashSet<Comerciantes>();
-        }
-    
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public System.DateTime fecha_emision { get; set; }
+        public int num_certificado { get; set; }
+        public int comerciantes_id { get; set; }
+        public string codigo_verificacion { get; set; }
+        public bool certificado_valido { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Comerciantes> Comerciantes { get; set; }
+        public virtual Comerciantes Comerciantes { get; set; }
     }
 }

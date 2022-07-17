@@ -1,0 +1,105 @@
+﻿@model Certificados.Models.Rectificaciones
+
+@{
+    Layout = null;
+}
+
+<style>
+    .dato-insertado {
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .texto-certificado {
+        font: 14px arial, verdana;
+        text-align: justify;
+        line-height: 1.5em;
+    }
+
+    .texto-centrado {
+        text-align: center;
+    }
+
+    .texto-superior-derecha {
+        text-align: right;
+    }
+</style>
+
+
+<div class="texto-certificado formatoA4">
+    <div class="texto-superior-derecha">
+        <div>
+            <p>Solicitud de Rectificación de Datos No. @ViewBag.RectNumber</p>
+            <p>@Model.fecha_rectificar.ToString("dd MMMM yyyy")</p>
+
+        </div>
+    </div>
+    <div class="centro">
+        <br /><br />
+        <p>
+            Señor Abogado<br />
+            Edison Javier Carrillo Vizcaino<br />
+            <strong>COORDINADOR DISTRITAL DEL COMERCIO</strong><br />
+            <strong>AGENCIA DE COORDINACIÓN DISTRITAL DEL COMERCIO</strong>
+        </p>
+        <br />
+        <p>De mi consideración:</p>
+        <br />
+        <p>
+            Por medio del presente y con la finalidad de generar el certificado de capacitación correspondiente al presente
+            año, requisito indispensable para la obtención del Permiso Único de Comerciante Autónomo – PUCA, solicito muy
+            comedidamente autorice y disponga a quien corresponda realice la rectificación de los datos que constan en el
+            Sistema de Generación de Certificados de Capacitación de la ACDC, conforme al siguiente detalle:
+        </p>
+
+        <ul>
+            @if (@Model.rectificar_nom_ape)
+            {
+                <li>Rectificación de nombres y apellidos: <span class="dato-insertado">@Model.Comerciantes.Nombres.ToUpper() @Model.Comerciantes.Apellidos.ToUpper()</span>.</li>
+            }
+
+            @if (@Model.rectificar_cedula)
+            {
+                <li>Rectificación del número de cédula: <span class="dato-insertado">@Model.Comerciantes.Cedula</span>.</li>
+            }
+
+            @if (ViewBag.RectificarInstitucion)
+            {
+                <li>
+                    Rectificación de la Administración Zonal / Institución:
+                    De "<span class="dato-insertado">@ViewData["origen"].ToString()</span>" a la
+                    "<span class="dato-insertado">@ViewData["destino"].ToString()</span>".
+                </li>
+            }
+        </ul>
+        <p>
+
+            Para los fines pertinentes, adjunto copia simple de mi documento de identificación, como instrumento
+            de validación de los datos a corregir.
+        </p>
+        <br />
+        <p>
+            Por la atención que dé a la presente, le agradezco.
+        </p>
+        <br />
+        <p>
+            Atentamente,
+        </p>
+        <br /><br /><br />
+        <p>
+            NOMBRE: ________________________________<br />
+            C.C.: __________________________________<br />
+            Teléfono: ______________________________<br />
+            Correo: ________________________________<br />
+        </p>
+    </div>
+    <br />
+    <div>
+        <div>
+            <p>
+                <strong>NOTA:</strong> El presente documento fue generado automáticamente en el Sistema de Generación de Certificados de
+                Capacitación de la ACDC.
+            </p>
+        </div>
+    </div>
+</div>

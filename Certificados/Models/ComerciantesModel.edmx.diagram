@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cc91f91af4914326ae96a94f4d16e99b" Name="Diagram1">
+        <EntityTypeShape EntityType="ComerciantesModel.Comerciantes" Width="1.5" PointX="5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ComerciantesModel.Certificados" Width="1.5" PointX="8.625" PointY="0.5" />
+        <EntityTypeShape EntityType="ComerciantesModel.Institucion" Width="1.5" PointX="1.75" PointY="0.5" />
+        <EntityTypeShape EntityType="ComerciantesModel.Rectificaciones" Width="1.5" PointX="5" PointY="3.875" />
+        <AssociationConnector Association="ComerciantesModel.FK_Comerciantes_ID" />
+        <AssociationConnector Association="ComerciantesModel.FK__Comercian__Insti__25869641" />
+        <AssociationConnector Association="ComerciantesModel.FK_Comerciantes_Rectificaciones" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -14,11 +14,24 @@ namespace Certificados.Models
     
     public partial class Comerciantes
     {
-        public int ID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Comerciantes()
+        {
+            this.Certificados = new HashSet<Certificados>();
+            this.Rectificaciones = new HashSet<Rectificaciones>();
+        }
+    
+        public int Id { get; set; }
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
-        public int Cedula { get; set; }
+        public string Cedula { get; set; }
         public int Capacitacion { get; set; }
-        public string Institucion { get; set; }
+        public int Institucion { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Certificados> Certificados { get; set; }
+        public virtual Institucion Institucion1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Rectificaciones> Rectificaciones { get; set; }
     }
 }

@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ComerciantesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Certificados">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha_emision" Type="datetime" Nullable="false" />
+          <Property Name="num_certificado" Type="int" Nullable="false" />
+          <Property Name="comerciantes_id" Type="int" Nullable="false" />
+          <Property Name="codigo_verificacion" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="certificado_valido" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comerciantes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombres" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Cedula" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Capacitacion" Type="int" Nullable="false" />
+          <Property Name="Institucion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Institucion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rectificaciones">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rectificar_nom_ape" Type="bit" Nullable="false" />
+          <Property Name="rectificar_cedula" Type="bit" Nullable="false" />
+          <Property Name="rectificar_inst_origen" Type="int" Nullable="false" />
+          <Property Name="rectificar_inst_destino" Type="int" Nullable="false" />
+          <Property Name="comerciantes_id" Type="int" Nullable="false" />
+          <Property Name="fecha_rectificar" Type="datetime" Nullable="false" />
+          <Property Name="num_solicitud" Type="int" Nullable="false" />
+          <Property Name="solicitud_atendida" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Comercian__Insti__25869641">
+          <End Role="Institucion" Type="Self.Institucion" Multiplicity="1" />
+          <End Role="Comerciantes" Type="Self.Comerciantes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institucion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comerciantes">
+              <PropertyRef Name="Institucion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comerciantes_ID">
+          <End Role="Comerciantes" Type="Self.Comerciantes" Multiplicity="1" />
+          <End Role="Certificados" Type="Self.Certificados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comerciantes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Certificados">
+              <PropertyRef Name="comerciantes_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comerciantes_Rectificaciones">
+          <End Role="Comerciantes" Type="Self.Comerciantes" Multiplicity="1" />
+          <End Role="Rectificaciones" Type="Self.Rectificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comerciantes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rectificaciones">
+              <PropertyRef Name="comerciantes_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ComerciantesModelStoreContainer">
+          <EntitySet Name="Certificados" EntityType="Self.Certificados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comerciantes" EntityType="Self.Comerciantes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Institucion" EntityType="Self.Institucion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rectificaciones" EntityType="Self.Rectificaciones" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Comercian__Insti__25869641" Association="Self.FK__Comercian__Insti__25869641">
+            <End Role="Institucion" EntitySet="Institucion" />
+            <End Role="Comerciantes" EntitySet="Comerciantes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comerciantes_ID" Association="Self.FK_Comerciantes_ID">
+            <End Role="Comerciantes" EntitySet="Comerciantes" />
+            <End Role="Certificados" EntitySet="Certificados" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comerciantes_Rectificaciones" Association="Self.FK_Comerciantes_Rectificaciones">
+            <End Role="Comerciantes" EntitySet="Comerciantes" />
+            <End Role="Rectificaciones" EntitySet="Rectificaciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ComerciantesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Comerciantes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombres" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cedula" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Capacitacion" Type="Int32" Nullable="false" />
+          <Property Name="Institucion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Certificados" Relationship="ComerciantesModel.FK_Comerciantes_ID" FromRole="Comerciantes" ToRole="Certificados" />
+          <NavigationProperty Name="Institucion1" Relationship="ComerciantesModel.FK__Comercian__Insti__25869641" FromRole="Comerciantes" ToRole="Institucion" />
+          <NavigationProperty Name="Rectificaciones" Relationship="ComerciantesModel.FK_Comerciantes_Rectificaciones" FromRole="Comerciantes" ToRole="Rectificaciones" />
+        </EntityType>
+        <EntityContainer Name="ComerciantesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Comerciantes" EntityType="Self.Comerciantes" />
+          <EntitySet Name="Certificados" EntityType="ComerciantesModel.Certificados" />
+          <EntitySet Name="Institucion" EntityType="ComerciantesModel.Institucion" />
+          <EntitySet Name="Rectificaciones" EntityType="ComerciantesModel.Rectificaciones" />
+          <AssociationSet Name="FK_Comerciantes_ID" Association="ComerciantesModel.FK_Comerciantes_ID">
+            <End Role="Comerciantes" EntitySet="Comerciantes" />
+            <End Role="Certificados" EntitySet="Certificados" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comercian__Insti__25869641" Association="ComerciantesModel.FK__Comercian__Insti__25869641">
+            <End Role="Institucion" EntitySet="Institucion" />
+            <End Role="Comerciantes" EntitySet="Comerciantes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comerciantes_Rectificaciones" Association="ComerciantesModel.FK_Comerciantes_Rectificaciones">
+            <End Role="Comerciantes" EntitySet="Comerciantes" />
+            <End Role="Rectificaciones" EntitySet="Rectificaciones" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Certificados">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha_emision" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="num_certificado" Type="Int32" Nullable="false" />
+          <Property Name="comerciantes_id" Type="Int32" Nullable="false" />
+          <Property Name="codigo_verificacion" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="certificado_valido" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Comerciantes" Relationship="ComerciantesModel.FK_Comerciantes_ID" FromRole="Certificados" ToRole="Comerciantes" />
+        </EntityType>
+        <EntityType Name="Institucion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Comerciantes" Relationship="ComerciantesModel.FK__Comercian__Insti__25869641" FromRole="Institucion" ToRole="Comerciantes" />
+        </EntityType>
+        <EntityType Name="Rectificaciones">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rectificar_nom_ape" Type="Boolean" Nullable="false" />
+          <Property Name="rectificar_cedula" Type="Boolean" Nullable="false" />
+          <Property Name="rectificar_inst_origen" Type="Int32" Nullable="false" />
+          <Property Name="rectificar_inst_destino" Type="Int32" Nullable="false" />
+          <Property Name="comerciantes_id" Type="Int32" Nullable="false" />
+          <Property Name="fecha_rectificar" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="num_solicitud" Type="Int32" Nullable="false" />
+          <Property Name="solicitud_atendida" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Comerciantes" Relationship="ComerciantesModel.FK_Comerciantes_Rectificaciones" FromRole="Rectificaciones" ToRole="Comerciantes" />
+        </EntityType>
+        <Association Name="FK_Comerciantes_ID">
+          <End Type="ComerciantesModel.Comerciantes" Role="Comerciantes" Multiplicity="1" />
+          <End Type="ComerciantesModel.Certificados" Role="Certificados" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comerciantes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Certificados">
+              <PropertyRef Name="comerciantes_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comercian__Insti__25869641">
+          <End Type="ComerciantesModel.Institucion" Role="Institucion" Multiplicity="1" />
+          <End Type="ComerciantesModel.Comerciantes" Role="Comerciantes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Institucion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comerciantes">
+              <PropertyRef Name="Institucion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comerciantes_Rectificaciones">
+          <End Type="ComerciantesModel.Comerciantes" Role="Comerciantes" Multiplicity="1" />
+          <End Type="ComerciantesModel.Rectificaciones" Role="Rectificaciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comerciantes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rectificaciones">
+              <PropertyRef Name="comerciantes_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ComerciantesModelStoreContainer" CdmEntityContainer="ComerciantesEntities">
+          <EntitySetMapping Name="Comerciantes">
+            <EntityTypeMapping TypeName="ComerciantesModel.Comerciantes">
+              <MappingFragment StoreEntitySet="Comerciantes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Cedula" ColumnName="Cedula" />
+                <ScalarProperty Name="Capacitacion" ColumnName="Capacitacion" />
+                <ScalarProperty Name="Institucion" ColumnName="Institucion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Certificados">
+            <EntityTypeMapping TypeName="ComerciantesModel.Certificados">
+              <MappingFragment StoreEntitySet="Certificados">
+                <ScalarProperty Name="certificado_valido" ColumnName="certificado_valido" />
+                <ScalarProperty Name="codigo_verificacion" ColumnName="codigo_verificacion" />
+                <ScalarProperty Name="comerciantes_id" ColumnName="comerciantes_id" />
+                <ScalarProperty Name="num_certificado" ColumnName="num_certificado" />
+                <ScalarProperty Name="fecha_emision" ColumnName="fecha_emision" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Institucion">
+            <EntityTypeMapping TypeName="ComerciantesModel.Institucion">
+              <MappingFragment StoreEntitySet="Institucion">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rectificaciones">
+            <EntityTypeMapping TypeName="ComerciantesModel.Rectificaciones">
+              <MappingFragment StoreEntitySet="Rectificaciones">
+                <ScalarProperty Name="solicitud_atendida" ColumnName="solicitud_atendida" />
+                <ScalarProperty Name="num_solicitud" ColumnName="num_solicitud" />
+                <ScalarProperty Name="fecha_rectificar" ColumnName="fecha_rectificar" />
+                <ScalarProperty Name="comerciantes_id" ColumnName="comerciantes_id" />
+                <ScalarProperty Name="rectificar_inst_destino" ColumnName="rectificar_inst_destino" />
+                <ScalarProperty Name="rectificar_inst_origen" ColumnName="rectificar_inst_origen" />
+                <ScalarProperty Name="rectificar_cedula" ColumnName="rectificar_cedula" />
+                <ScalarProperty Name="rectificar_nom_ape" ColumnName="rectificar_nom_ape" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

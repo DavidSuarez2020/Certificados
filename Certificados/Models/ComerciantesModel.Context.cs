@@ -26,6 +26,8 @@ namespace Certificados.Models
         }
     
         public virtual DbSet<Comerciantes> Comerciantes { get; set; }
+        public virtual DbSet<Certificados> Certificados { get; set; }
         public virtual DbSet<Institucion> Institucion { get; set; }
+        public virtual DbSet<Rectificaciones> Rectificaciones { get; set; }
     }
 }

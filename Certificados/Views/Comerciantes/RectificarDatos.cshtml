@@ -1,0 +1,136 @@
+﻿@using Certificados.Models
+@model Rectificaciones
+
+@{
+    Layout = null;
+    ViewBag.Title = "Rectificación de datos".ToUpper();
+    var dataComerciante = (Comerciantes)ViewData["comerciante"];
+    var dataInstitucionesDMQ = (List<SelectListItem>)ViewData["institucionesDMQ"];
+}
+
+<h2 class="text-center" style="margin-top: 1em">@ViewBag.Title</h2>
+<br />
+
+<p>
+    En el caso que usted considere que los datos presentados están incorrectos, puede solicitar la rectificación de estos mediante
+    un oficio dirigido a la Máxima Autoridad de la ACDC. Este aplicativo le permite generar automáticamente dicha solicitud, para
+    lo cual debe marcar una o las dos casillas que corresponden a los campos que deben ser corregidos.
+</p>
+<p>
+    En caso que usted utilice este aplicativo para generar la solicitud, no podrá generar el certificado a través del sistema hasta
+    que su requerimiento sea atendido por parte de la Agencia de Coordinación Distrital del Comerico - ACDC.
+</p>
+<p>
+    Antes de generar la solicitud, se recomienda que revise sus datos una vez más.
+</p>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Comerciantes.Nombres)
+        </dt>
+        <dd>
+            @dataComerciante.Nombres
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comerciantes.Apellidos)
+        </dt>
+        <dd>
+            @dataComerciante.Apellidos
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comerciantes.Cedula)
+        </dt>
+        <dd>
+            @dataComerciante.Cedula
+        </dd>
+        <dt>
+            Institución:
+        </dt>
+        <dd>
+            @dataComerciante.Institucion1.Nombre
+        </dd>
+    </dl>
+    <hr />
+</div>
+
+<p>
+    Si está seguro de continuar, marque los datos que deben ser rectificados y presione "Generar oficio". Recuerde que una vez
+    que genere el documento, debe descargarlo, imprimirlo, firmalo y entregarlo en las oficinas de la ACDC, ubicadas en la calle
+    Jorge Washington E4-54 y Avenida Amazonas, Edificio de la Secretaría de Salud, primer piso.
+</p>
+
+@*<div>
+        @foreach(var temp in dataInstitucionesDMQ)
+        {
+            <p>@temp.Selected - @temp.Text - @temp.Value</p>
+        }
+    </div>*@
+
+@using (Html.BeginForm("GenerarRectificacion", "Comerciantes", FormMethod.Post, htmlAttributes: new { @class = "form-horizontal", @role = "form", @onsubmit = "return validateForm();" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <br />
+    <div class="form-group">
+        <div class="col-md-4">
+            @Html.CheckBoxFor(m => m.rectificar_nom_ape)
+            @Html.LabelFor(m => m.rectificar_nom_ape, "Nombres y/o apellidos")
+        </div>
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+            @Html.CheckBoxFor(m => m.rectificar_cedula)
+            @Html.LabelFor(m => m.rectificar_cedula, "Cédula")
+        </div>
+        <div class="col-md-8"></div>
+        <div class="col-md-4">
+            @Html.DropDownListFor(m => m.rectificar_inst_destino, dataInstitucionesDMQ)
+        </div>
+        <div class="col-md-8"></div>
+        @Html.HiddenFor(m => m.comerciantes_id)
+        @Html.HiddenFor(m => m.rectificar_inst_origen)
+    </div>
+    <div class="form-group">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <input type="submit" class="btn btn-success btn-lg" value="Generar oficio" />
+        </div>
+    </div>
+}
+
+<script type="text/javascript" language="JavaScript">
+
+    // actualizar valor seleccionado el dropdownlist
+    @*window.onload = function () {
+        var dataDropdown = @dataInstitucionesDMQ;
+        //var inputDropdown = document.getElementById('rectificar_inst_destino');
+        var tempDestino = document.getElementById('rectificar_inst_destino');
+        var valueDestino = tempDestino.options[tempDestino.selectedIndex].value;
+
+        var index = 0;
+
+        for (var i = 0; i < dataDropdown.length; i++) {
+            if (dataDropdown[i].Selected == true) {
+                index = dataDropdown[i].Value;
+                break;
+            }
+        };
+        alert(index);
+        valueDestino == index;
+    }*@
+
+    function validateForm() {
+        var nombresApellidos = document.getElementById('rectificar_nom_ape').checked;
+        var cedula = document.getElementById('rectificar_cedula').checked;
+        var valueOrigen = document.getElementById('rectificar_inst_origen').value;
+        var tempDestino = document.getElementById('rectificar_inst_destino');
+        var valueDestino = tempDestino.options[tempDestino.selectedIndex].value;
+        if (!nombresApellidos && !cedula && (valueOrigen == valueDestino)) {
+            alert("Para generar su solicitud, debe marcar al menos una casilla o cambiar de institución.");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>

@@ -1,17 +1,18 @@
 ﻿@model Certificados.Models.Comerciantes
 
 @{
-    ViewBag.Title = "Resultado de la búsqueda";
+    ViewBag.Title = "Problema al generar el certificao";
     Layout = "~/Views/Shared/_Layout TB.cshtml";
 }
 
-<h2 class="text-center">@ViewBag.Title</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
     <br />
-    <h3>No se ha encontrado resultados con la cédula de ciudadanía No. <b>@ViewBag.DataCedula</b> y los apellidos <b>@ViewBag.DataApellidos</b>.</h3>
+    <h4>Lo sentimos...</h4>
     <hr />
 </div>
+<p>Se ha producido un error al momento de generar su documento, por favor intente más tarde.</p>
 <p>
     <a href="~/Comerciantes/NuevaBusqueda" class="btn btn-primary btn-lg">Nueva Búsqueda &raquo;</a>
     <a href="~/Home" class="btn btn-primary btn-lg">Regresar a Inicio</a>

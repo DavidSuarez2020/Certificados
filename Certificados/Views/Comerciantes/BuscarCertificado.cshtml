@@ -7,69 +7,99 @@
 
 <h2>@ViewBag.Title</h2>
 <br />
-<h4>Datos del comerciantes con cédula de ciudadanía No. @ViewBag.Data:</h4>
+<h3>Datos del comerciantes con cédula de ciudadanía No. <b>"@ViewBag.DataCedula"</b> y apellidos <b>"@ViewBag.DataApellidos"</b></h3>
 <br />
 <div>
-    <h2>Por favor, antes de generar su certificado, revise sus datos:</h2>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nombres)
-        </dt>
+    <div>
+        @if (@ViewBag.CertificadoGenerado)
+        {
+            <p>
+                Previamente, con los datos consultados ya se ha generado un certificado de capacitación, presione el botón
+                <b>Descargar certificado</b> para guardarlo.
+            </p>
+        }
+        else
+        {
+            if (@ViewBag.RectificacionGenerado)
+            {
+                <p>
+                    Actualmente, usted registra una solicitud de rectificación de datos. En caso de requerirlo, puede guardar
+                    el documento presionando en el botón <b>Descargar solicitud</b>.
+                </p>
+            }
+            else
+            {
+                <h4>Por favor, antes de generar su certificado, revise sus datos:</h4>
+                <p>
+                    <strong>Importante:</strong> Por favor, revise minuciosamente sus datos ya que una vez generado el certificado
+                    de capacitación, usted ya no podrá generar la solicitud la rectificación a través de este aplicativo.
+                </p>
+                <p>
+                    Para obtener su certificado de capacitación, presione el botón <b>Generar certificado</b>. Si considera que
+                    los datos presentados en la pantalla contienen errores y deben ser rectificados, presione
+                    @Html.ActionLink("aquí", "RectificarDatos", "Comerciantes", Model, new { @class = "link-primary" })
+                    .
+                </p>
+            }
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.Nombres)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Apellidos)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Apellidos)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Cedula)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Cedula)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Capacitacion)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Capacitacion)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Institucion)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Institucion)
-        </dd>
-
-    </dl>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Nombres)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Nombres)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Apellidos)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Apellidos)
+            </dd>
+            <dt>
+                Cédula:
+                @*@Html.DisplayNameFor(model => model.Cedula)*@
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Cedula)
+            </dd>
+            <dt>
+                Año de capacitación:
+                @*@Html.DisplayNameFor(model => model.Capacitacion)*@
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Capacitacion)
+            </dd>
+            <dt>
+                Institución:
+                @*@Html.DisplayNameFor(model => model.InstitucionesDMQ.nombre_institucion)*@
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Institucion1.Nombre) 
+            </dd>
+        </dl>
+        <hr />
+    </div>
 </div>
 <div>
     <p>
-        @Html.ActionLink("Generar PDF", "GenerarPDF", "Comerciantes", Model, new { @class = "btn btn-primary btn-lg" })
+        @if (@ViewBag.CertificadoGenerado)
+        {
+            @Html.ActionLink("Descargar certificado", "GenerarCertificado", "Comerciantes", Model, new { @class = "btn btn-success btn-lg" })
+        }
+        else
+        {
+            if (@ViewBag.RectificacionGenerado)
+            {
+                @Html.ActionLink("Descargar solicitud", "DescargarRectificacion", "Comerciantes", Model, new { @class = "btn btn-success btn-lg" })
+            }
+            else
+            {
+                @Html.ActionLink("Generar documento", "GenerarCertificado", "Comerciantes", Model, new { @class = "btn btn-success btn-lg" })
+            }
+        }
         <a href="~/Comerciantes/NuevaBusqueda" class="btn btn-primary btn-lg">Nueva Búsqueda &raquo;</a>
-        <a href="~/Home" class="btn btn-primary btn-lg">Regresar a Inicio</a>
     </p>
-    @*<div class="col-md-2">
-        @Html.ActionLink("Generar PDF", "GenerarPDF", "Comerciantes", null, new { @class = "btn btn-primary btn-lg" })
-    </div>
-    <div class="col-md-2">
-        <p><a href="~/Comerciantes/NuevaBusqueda" class="btn btn-primary btn-lg">Nueva Búsqueda &raquo;</a></p>
-    </div>
-    <div class="col-md-2">
-        <p><a href="~/Home" class="btn btn-primary btn-lg">Regresar a Inicio</a></p>
-    </div>
-    <div class="col-md-6"></div>*@
-    <br />
 </div>

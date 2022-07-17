@@ -18,6 +18,7 @@
                             <th>Cédula</th>
                             <th>Nombres</th>
                             <th>Apellidos</th>
+                            <th>Institución</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -41,7 +42,8 @@
                     { "data": "Cedula" },
                     { "data": "Nombres" },
                     { "data": "Apellidos" },
-                    { "data": "ID", "render": function (data) {
+                    { "data": "Institucion" },
+                    { "data": "Id", "render": function (data) {
                             return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'>ABCD</button>"
                         },
                         "orderable": false,

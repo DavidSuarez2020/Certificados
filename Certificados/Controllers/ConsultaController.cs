@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Certificados.Models;
+using Certificados.Models.ViewModel;
 
 namespace Certificados.Controllers
 {
@@ -17,11 +18,23 @@ namespace Certificados.Controllers
 
         public JsonResult Listar()
         {
-            List<Comerciantes> lst = new List<Comerciantes>();
+
+            List<ComercianteViewModel> lst = new List<ComercianteViewModel>();
             using (ComerciantesEntities db = new ComerciantesEntities())
             {
                 lst = (from p in db.Comerciantes
-                       select p).ToList();
+                       join a in db.Institucion
+                       on p.Institucion equals a.Id
+                       select new ComercianteViewModel
+                       {
+                           Id = p.Id,
+                           Nombres = p.Nombres,
+                           Apellidos = p.Apellidos,
+                           Cedula = p.Cedula,
+                           Capacitacion = p.Capacitacion,
+                           Institucion = a.Nombre
+                       }
+                       ).ToList();
             }
             return Json(new { data = lst }, JsonRequestBehavior.AllowGet);
         }

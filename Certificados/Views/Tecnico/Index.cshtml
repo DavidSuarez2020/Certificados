@@ -1,10 +1,13 @@
 ﻿
-@{
+@{ 
     ViewBag.Title = "Rol - Técnico";
+
+    List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
     Layout = "~/Views/Shared/_Layout TB.cshtml";
 }
 
 <h3>En esta ventana podrá modificar y eliminar los registros de comerciantes autónomos del DMQ</h3>
+
 
 <div class="row">
     <div class="col-sm-12">
@@ -18,6 +21,7 @@
                             <th>Nombres</th>
                             <th>Apellidos</th>
                             <th>Capacitación</th>
+                            <th>ID_Institución</th>
                             <th>Institución</th>
                             <th></th>
                         </tr>
@@ -61,9 +65,15 @@
                             <label for="txtCapacitacion">Capacitación:</label>
                             <input type="text" class="form-control" id="txtCapacitacion">
                         </div>
+
+                        <div class="form-group">
+                            <label for="txtInstitucionID">ID_Institución:</label>
+                            <input type="text" class="form-control" id="txtInstitucionID">
+                        </div>
+
                         <div class="form-group">
                             <label for="txtInstitucion">Institución:</label>
-                            <input type="text" class="form-control" id="txtInstitucion">
+                            @Html.DropDownList("Datos", items, new { @class = "form-control"})
                         </div>
 
 
@@ -87,9 +97,7 @@
 
         var tabla_comerciantes;
         $(document).ready(function () {
-
             tabla_comerciantes = $('#tbComerciantes').DataTable({
-
                 "ajax": {
                     "url": "@Url.Action("Listar","Tecnico")",
                     "type": "GET",
@@ -100,8 +108,9 @@
                     { "data": "Nombres" },
                     { "data": "Apellidos" },
                     { "data": "Capacitacion" },
+                    { "data": "InstitucionID" },
                     { "data": "Institucion" },
-                    { "data": "ID", "render": function (data) {
+                    { "data": "Id", "render": function (data) {
                         return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>" +
                             "<button class='btn btn-danger btn-sm ml-2' type='button' onclick='Eliminar(" + data + ")'><i class='fas fa-trash'></i></button>"
                         },
@@ -110,15 +119,13 @@
                         "width": "150px"
                     }
                 ],
-
-
             });
         });
+
 
         function abrirModal($ID) {
             $("#txtIdPersona").val($ID);
             if ($ID != 0) {
-
                 jQuery.ajax({
                     url: "@Url.Action("Obtener", "Tecnico")" + "?ID=" + $ID,
                     type: "GET",
@@ -130,9 +137,9 @@
                             $("#txtNombres").val(data.Nombres);
                             $("#txtApellidos").val(data.Apellidos);
                             $("#txtCapacitacion").val(data.Capacitacion);
+                            $("#txtInstitucionID").val(data.InstitucionID);
                             $("#txtInstitucion").val(data.Institucion);
                         }
-
                     }
                 });
             }
@@ -150,7 +157,6 @@
                     Apellidos: $("#txtApellidos").val(),
                     Institucion: $("#txtInstitucion").val(),
                     Capacitacion: parseInt($("#txtCapacitacion").val()),
-
                 }
             }
 
@@ -166,6 +172,7 @@
                     if (data.resultado) {
                         tabla_comerciantes.ajax.reload();
                         $('#FormModal').modal('hide');
+                        alert("Se guardaron correctamente los cambios");
                     } else {
                         alert("No se pudo guardar los cambios");
                     }
