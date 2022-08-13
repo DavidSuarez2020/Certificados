@@ -5,6 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using Certificados.Models;
 using Certificados.Models.ViewModel;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
+using Certificados.Reportes;
+using System.IO;
 
 namespace Certificados.Controllers
 {
@@ -15,6 +19,33 @@ namespace Certificados.Controllers
         {
             return View();
         }
+
+
+        public ActionResult ReporteInstitucion()
+        {
+            return View();
+        }
+
+        public ActionResult VerReporte()
+        {
+            var reporte = new ReportClass();
+            reporte.FileName = Server.MapPath("/Reportes/ReporteInstitucion.rpt");
+
+            //Conexión para el reporte
+            var coninfo = ReportesConexion.GetConnection();
+            TableLogOnInfo logOnInfo = new TableLogOnInfo();
+            Tables tables;
+            tables = reporte.Database.Tables;
+
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+
+            Stream stream = reporte.ExportToStream(ExportFormatType.PortableDocFormat);
+            return new FileStreamResult(stream, "application/pdf");
+
+        }
+
 
         public JsonResult Listar()
         {

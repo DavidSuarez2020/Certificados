@@ -19,31 +19,11 @@ namespace Certificados.Controllers
         private readonly string baseNumCertificado = "ACDC-DCA-CC-";
         private readonly string baseNumRectificaciones = "SRD-";
         private readonly string salt = "certifyYourself";
-
-        // variable para generar PDF
-        //public Comerciantes com = new Comerciantes(); -- YA NO TIENE
-
-        // GET: Comerciantes
-
-        
+     
         public ActionResult Index()
         {
             return View();
         }
-
-        /* --------CAMBIO DE LISTAR -----------------
-        public JsonResult Listar()
-        {
-            List<Comerciantes> lst = new List<Comerciantes>();
-            using (ComerciantesEntities db = new ComerciantesEntities())
-            {
-                lst = (from p in db.Comerciantes
-                       select p).ToList();
-            }
-            return Json(new { data = lst }, JsonRequestBehavior.AllowGet);
-        }
-        -------- FIN DE CAMBIO DE LISTAR -----------------
-        */
 
         public JsonResult Listar()
         {
@@ -61,7 +41,6 @@ namespace Certificados.Controllers
                            Cedula = p.Cedula,
                            Capacitacion = p.Capacitacion,
                            Institucion = c.Nombre
-
                        }).ToList();
             }
 
@@ -102,64 +81,6 @@ namespace Certificados.Controllers
             return View();
         }
 
-
-        /* ------- BUSCAR CERTIFICADO ANTERIOR ------------------ 
-        [HttpPost]
-        public ActionResult BuscarCertificado(string cedulaString)
-        {
-            // comprobar conversión de texto ingresado
-            if (Int32.TryParse(cedulaString, out int cedulaInt))
-            {
-                ComerciantesEntities db = new ComerciantesEntities();
-                var resultado = from c in db.Comerciantes
-                                where c.Cedula == cedulaInt.ToString()
-                                select c;
-
-                Comerciantes comercianteResult = new Comerciantes();
-
-                // comprobar si resultado tiene al menos un elemento
-                if (resultado.Any())
-                {
-                    comercianteResult = resultado.First();
-                    ViewBag.Data = cedulaString;
-                    com = comercianteResult;
-                    return View(comercianteResult);
-                }
-                else
-                {
-                    ViewBag.Data = cedulaString;
-                    ResetCom();
-                    return View("NoResultado");
-                }
-            }
-            else
-            {
-                // en caso que no pueda convertirse el valor ingresado
-                ViewBag.Data = cedulaString;
-                ResetCom();
-                return View("NoResultado");
-            }
-        }
-
-        ------- FIN BUSCAR CERTIFICADO ANTERIOR ------------------ 
-        */
-
-
-
-        /* ------- RESTO DE CODIGO ANTERIOR ------------------ 
-        public void ResetCom()
-        {
-            //com = null;
-            com = new Comerciantes();
-        }
-
-        public ActionResult GenerarPDF(Comerciantes comerciante)
-        {
-            //return View();
-            return new ViewAsPdf("GenerarPDF", comerciante);
-        }
-        ------- FIN RESTO DE CODIGO ANTERIOR ------------------ 
-        */
 
         [HttpPost]
         public ActionResult BuscarCertificado(string cedulaString, string apellidosString)  // buscar Comerciante en BDD por 
@@ -252,7 +173,8 @@ namespace Certificados.Controllers
             {
                 fecha_emision = DateTime.Today,
                 comerciantes_id = comerciante.Id,
-                codigo_verificacion = CreateHashString(comerciante.Cedula)
+                codigo_verificacion = CreateHashString(comerciante.Cedula),
+                certificado_valido = true
             };
 
             // búsqueda número certificado actual
@@ -302,7 +224,7 @@ namespace Certificados.Controllers
         {
             ViewBag.Rectificado = false;
             ViewData["comerciante"] = GetComercianteById(comerciante.Id);
-            ViewData["institucionesDMQ"] = GetItemsInstitucionesDMQ(GetInstituciones(), comerciante.Id);
+            ViewData["institucionesDMQ"] = GetItemsInstitucionesDMQ(GetInstituciones(), comerciante.Id); //PREGUNTAR--------------
 
             Rectificaciones rectificacion = new Rectificaciones()
             {
@@ -312,23 +234,7 @@ namespace Certificados.Controllers
 
             return View(rectificacion);
         }
-
-        public ActionResult ValidarCertificado(string id)  // validar certificado generado
-        {
-            //Comerciantes comerciante = GetComercianteByCedula(id);
-            Comerciantes comerciante = GetComercianteByCodigoVerificacion(id);
-            ViewBag.CertNumber = baseNumCertificado;
-            if (comerciante != null)
-            {
-                return View(GetCertificadoByComerId(comerciante.Id));
-            }
-            else
-            {
-                return View("NoValidacion");
-            }
-        }
-
-
+        
         [HttpPost]
         public ActionResult GenerarRectificacion(Rectificaciones rectificacion) // descargar PDF rectificar ya generado
         {
@@ -347,8 +253,9 @@ namespace Certificados.Controllers
             }
             ViewBag.RectNumber = baseNumRectificaciones + DateTime.Today.Year + "-" + rectificacion.num_solicitud;
 
-            // agregar fecha
+            // agregar fecha e indicar que aún no se atiende
             rectificacion.fecha_rectificar = DateTime.Now;
+            rectificacion.solicitud_atendida = false;
 
             // verificar si rectifica institución (cambio)
             ViewBag.RectificarInstitucion = false;
@@ -419,7 +326,20 @@ namespace Certificados.Controllers
             }
         }
 
-
+        public ActionResult ValidarCertificado(string id)  // validar certificado generado
+        {
+            Comerciantes comerciante = GetComercianteByCodigoVerificacion(id);
+            ViewBag.CertNumber = baseNumCertificado;
+            if (comerciante != null)
+            {
+                return View(GetCertificadoByComerId(comerciante.Id));
+            }
+            else
+            {
+                return View("NoValidacion");
+            }
+        }
+        
         public Comerciantes GetComercianteById(int comerId)      // recuperar Comerciante por su Id
         {
             ComerciantesEntities dbCom = new ComerciantesEntities();
@@ -503,11 +423,11 @@ namespace Certificados.Controllers
             }
         }
 
-        public Rectificaciones GetRectificacionByComerId(int comerId)   // recuperar Rectificion por id comerciante
+        public Rectificaciones GetRectificacionByComerId(int comerId)   // recuperar Rectificacion no atendida por id comerciante
         {
             ComerciantesEntities dbRect = new ComerciantesEntities();
             var resultado = from rect in dbRect.Rectificaciones
-                            where rect.comerciantes_id == comerId
+                            where rect.comerciantes_id == comerId && rect.solicitud_atendida == false
                             select rect;
             if (resultado.Any())
             {
@@ -585,9 +505,6 @@ namespace Certificados.Controllers
                 return String.Empty;
             }
         }
-
-
-
 
 
     } //Fin Controlador

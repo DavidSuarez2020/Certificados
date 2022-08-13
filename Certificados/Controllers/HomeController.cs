@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace IdentitySample.Controllers
 {
+    //VERSION LOCAL DS
     public class HomeController : Controller
     {
         [HttpGet]

@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Reporte Institucion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#btnIncrustar").on("click", function () {
+                $("#reporteInstitucion").attr("src", "VerReporte").load();
+            });
+
+        });
+
+    </script>
+}
+
+
+<h2>Reporte por Institución</h2>
+
+<hr />
+
+<input type="button" id="btnIncrustar" value="Generar Reporte" class="btn btn-success" />
+
+<hr />
+
+<iframe id="reporteInstitucion" style="width:100%; height:600px;" frameborder="0" scrolling="yes">
+</iframe>
