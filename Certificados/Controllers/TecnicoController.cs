@@ -40,6 +40,32 @@ namespace Certificados.Controllers
             return View();
         }
 
+        public ActionResult SolicitudesRectificacion()
+        {
+            List<InstitucionViewModel> inst = null;
+            using (ComerciantesEntities db = new ComerciantesEntities())
+            {
+                inst = (from d in db.Institucion
+                        select new InstitucionViewModel
+                        {
+                            ID = d.Id,
+                            Nombre = d.Nombre
+                        }).ToList();
+            }
+            List<SelectListItem> items = inst.ConvertAll(d =>
+            {
+
+                return new SelectListItem()
+                {
+                    Text = d.Nombre.ToString(),
+                    Value = d.ID.ToString(),
+                };
+
+            });
+            ViewBag.items = items;
+            return View();
+        }
+
         public JsonResult Listar()
         {
             List<ComercianteViewModel> lst = new List<ComercianteViewModel>();
@@ -63,7 +89,55 @@ namespace Certificados.Controllers
             return Json(new { data = lst }, JsonRequestBehavior.AllowGet);
         }
 
-        
+        public JsonResult ListarComerciantes()
+        {
+            List<ComercianteCertificadoViewModel> listaResultado = new List<ComercianteCertificadoViewModel>();
+            using (ComerciantesEntities db = new ComerciantesEntities())
+            {
+                listaResultado = (from comer in db.Comerciantes
+                                  select new ComercianteCertificadoViewModel
+                                  {
+                                      Id = comer.Id,
+                                      Nombres = comer.Nombres,
+                                      Apellidos = comer.Apellidos,
+                                      Cedula = comer.Cedula,
+                                      Institucion = comer.Institucion1.Nombre,
+                                      CertificadoGenerado = "No"
+                                  }
+                       ).ToList();
+
+                foreach (ComercianteCertificadoViewModel cc in listaResultado)
+                {
+                    if (BuscarCertificadoByComercianteId(cc.Id))
+                    {
+                        cc.CertificadoGenerado = "Sí";
+                    }
+                }
+            }
+            return Json(new { data = listaResultado }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ListarSolicitudesRectificacion()
+        {
+            List<ComercianteRectificacionViewModel> lst = new List<ComercianteRectificacionViewModel>();
+            using (ComerciantesEntities db = new ComerciantesEntities())
+            {
+                lst = (from p in db.Comerciantes
+                       join rect in db.Rectificaciones on p.Id equals rect.comerciantes_id
+                       where rect.solicitud_atendida == false
+                       select new ComercianteRectificacionViewModel
+                       {
+                           Id = p.Id,
+                           Nombres = p.Nombres,
+                           Apellidos = p.Apellidos,
+                           Cedula = p.Cedula,
+                           Institucion = p.Institucion1.Nombre,
+                           RectificacionGenerada = "Sí"
+                       }).ToList();
+                //RectificacionGenerada = rect.Id != 0 ? "Sí" : "No"
+            }
+            return Json(new { data = lst }, JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult Obtener(int ID)
         {
@@ -143,7 +217,109 @@ namespace Certificados.Controllers
         }
 
 
-        //CODIGO ANDRES
+        [HttpPost]
+        public JsonResult GuardarAtencion(Comerciantes oComerciante)
+        {
+            bool respuesta = true;
+            try
+            {
+                if (oComerciante.Id == 0)
+                {
+                    using (ComerciantesEntities db = new ComerciantesEntities())
+                    {
+                        db.Comerciantes.Add(oComerciante);
+                        db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    using (ComerciantesEntities db = new ComerciantesEntities())
+                    {
+                        // actualizar datos comerciante
+                        Comerciantes tempComerciante = (from p in db.Comerciantes
+                                                        join a in db.Institucion
+                                                        on p.Id equals oComerciante.Id
+
+                                                        select p).FirstOrDefault();
+
+                        tempComerciante.Nombres = oComerciante.Nombres;
+                        tempComerciante.Apellidos = oComerciante.Apellidos;
+                        tempComerciante.Capacitacion = oComerciante.Capacitacion;
+                        tempComerciante.Cedula = oComerciante.Cedula;
+
+                        // actualizar atención de rectificación
+                        Rectificaciones tempRectificacion = (from r in db.Rectificaciones
+                                                             where r.comerciantes_id == oComerciante.Id
+                                                             select r).FirstOrDefault();
+
+                        tempRectificacion.solicitud_atendida = true;
+
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch
+            {
+                respuesta = false;
+            }
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult Eliminar(int ID)
+        {
+            bool respuesta = true;
+            try
+            {
+                using (ComerciantesEntities db = new ComerciantesEntities())
+                {
+                    Comerciantes oComerciante = new Comerciantes();
+                    oComerciante = (from p in db.Comerciantes.Where(x => x.Id == ID)
+                                    select p).FirstOrDefault();
+
+                    db.Comerciantes.Remove(oComerciante);
+                    db.SaveChanges();
+                }
+            }
+            catch
+            {
+                respuesta = false;
+            }
+
+            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public bool BuscarCertificadoByComercianteId(int comerId)
+        {
+            bool resultado = false;
+            using (ComerciantesEntities db = new ComerciantesEntities())
+            {
+                resultado = (from cert in db.Certificados
+                             where cert.comerciantes_id == comerId
+                             select cert).Any();
+            }
+            return resultado;
+        }
+
+        public bool BuscarRectificacionByComercianteId(int comerId)
+        {
+            bool resultado = false;
+            try
+            {
+                using (ComerciantesEntities db = new ComerciantesEntities())
+                {
+                    resultado = (from rect in db.Rectificaciones
+                                 where rect.comerciantes_id == comerId
+                                 select rect).Any();
+                }
+                return resultado;
+            }
+            catch (Exception)
+            {
+                return resultado;
+            }
+        }
 
         public List<Institucion> GetInstituciones()
         {
@@ -173,28 +349,7 @@ namespace Certificados.Controllers
         //FIN Codigo
 
 
-        public JsonResult Eliminar(int ID)
-        {
-            bool respuesta = true;
-            try
-            {
-                using (ComerciantesEntities db = new ComerciantesEntities())
-                {
-                    Comerciantes oComerciante = new Comerciantes();
-                    oComerciante = (from p in db.Comerciantes.Where(x => x.Id == ID)
-                                    select p).FirstOrDefault();
-
-                    db.Comerciantes.Remove(oComerciante);
-                    db.SaveChanges();
-                }
-            }
-            catch
-            {
-                respuesta = false;
-            }
-
-            return Json(new { resultado = respuesta }, JsonRequestBehavior.AllowGet);
-        }
+        
 
 
     }

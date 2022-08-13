@@ -8,45 +8,58 @@
     var dataInstitucionesDMQ = (List<SelectListItem>)ViewData["institucionesDMQ"];
 }
 
-<h2 class="text-center" style="margin-top: 1em">@ViewBag.Title</h2>
 <br />
+<h1 class="text-center" style="margin-top: 1em">@ViewBag.Title</h1>
 
-<p>
+<p style="font-size:large">
     En el caso que usted considere que los datos presentados están incorrectos, puede solicitar la rectificación de estos mediante
     un oficio dirigido a la Máxima Autoridad de la ACDC. Este aplicativo le permite generar automáticamente dicha solicitud, para
     lo cual debe marcar una o las dos casillas que corresponden a los campos que deben ser corregidos.
 </p>
-<p>
+<p style="font-size:large">
     En caso que usted utilice este aplicativo para generar la solicitud, no podrá generar el certificado a través del sistema hasta
     que su requerimiento sea atendido por parte de la Agencia de Coordinación Distrital del Comerico - ACDC.
 </p>
-<p>
+<p style="font-size:large">
     Antes de generar la solicitud, se recomienda que revise sus datos una vez más.
 </p>
 <div>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Comerciantes.Nombres)
+        <dt style="font-size:large">
+            <b>
+                @Html.DisplayNameFor(model => model.Comerciantes.Nombres)
+            </b>
         </dt>
         <dd>
             @dataComerciante.Nombres
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Comerciantes.Apellidos)
+
+        <dt style="font-size:large">
+            <b>
+                @Html.DisplayNameFor(model => model.Comerciantes.Apellidos)
+            </b>
         </dt>
         <dd>
             @dataComerciante.Apellidos
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Comerciantes.Cedula)
+
+        <dt style="font-size:large">
+            <b>
+                @Html.DisplayNameFor(model => model.Comerciantes.Cedula)
+            </b>
         </dt>
+
         <dd>
             @dataComerciante.Cedula
         </dd>
-        <dt>
-            Institución:
+
+        <dt style="font-size:large">
+            <b>
+                Institución
+            </b>
         </dt>
+
         <dd>
             @dataComerciante.Institucion1.Nombre
         </dd>
@@ -54,7 +67,7 @@
     <hr />
 </div>
 
-<p>
+<p style="font-size:large">
     Si está seguro de continuar, marque los datos que deben ser rectificados y presione "Generar oficio". Recuerde que una vez
     que genere el documento, debe descargarlo, imprimirlo, firmalo y entregarlo en las oficinas de la ACDC, ubicadas en la calle
     Jorge Washington E4-54 y Avenida Amazonas, Edificio de la Secretaría de Salud, primer piso.
@@ -93,9 +106,13 @@
     <div class="form-group">
         <div class="col-md-2"></div>
         <div class="col-md-10">
-            <input type="submit" class="btn btn-success btn-lg" value="Generar oficio" />
+            <br />
+            <input type="submit" class="btn btn-success btn-lg" value="Generar Oficio" />
         </div>
+        <br />
+        <a href="~/Comerciantes/NuevaBusqueda" class="btn btn-primary btn-lg">Regresar a Búsqueda de Certificado &raquo;</a>
     </div>
+    
 }
 
 <script type="text/javascript" language="JavaScript">

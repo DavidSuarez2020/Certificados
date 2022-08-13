@@ -1,0 +1,108 @@
+﻿@model Certificados.Models.Plantillas
+
+@{
+    ViewBag.Title = "Cargar Plantilla";
+}
+
+<style type="text/css">
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<div>
+    <h2>Plantilla Guardada</h2>
+    <br />
+    <h4>Registro Exitoso.</h4>
+    <br />
+    <p>@ViewBag.Mensaje</p>
+    <hr />
+</div>
+
+<!--<div>
+    <h4>Datos de su plantilla</h4>
+    <dl class="dl-horizontal">-->
+@*<dt>
+        @Html.DisplayNameFor(model => model.fecha_creacion)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.fecha_creacion)
+    </dd>*@
+<!--<dt>
+    @Html.DisplayNameFor(model => model.nombres_plantilla)
+</dt>
+<dd>
+    @Html.DisplayFor(model => model.nombres_plantilla)
+</dd>
+<dt>
+    @Html.DisplayNameFor(model => model.apellidos_plantilla)
+</dt>
+<dd>
+    @Html.DisplayFor(model => model.apellidos_plantilla)
+</dd>
+<dt>
+    @Html.DisplayNameFor(model => model.curso_plantilla)
+</dt>
+<dd>
+    @Html.DisplayFor(model => model.curso_plantilla)
+</dd>
+<dt>
+    @Html.DisplayNameFor(model => model.fecha_plantilla)
+</dt>
+<dd>
+    @Html.DisplayFor(model => model.fecha_plantilla)
+</dd>
+<dt>-->
+@*@Html.DisplayNameFor(model => model.archivo_plantilla)*@
+<!--Archivo:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.archivo_plantilla)
+        </dd>
+
+        @if (Model.opcional1_plantilla)
+        {
+            <dt>
+            @Html.DisplayNameFor(model => model.opcional1_plantilla)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.opcional1_plantilla)
+            </dd>
+        }
+
+        @if (Model.opcional2_plantilla)
+        {
+            <dt>
+            @Html.DisplayNameFor(model => model.opcional2_plantilla)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.opcional2_plantilla)
+            </dd>
+        }
+
+        @if (Model.opcional3_plantilla)
+        {
+            <dt>
+            @Html.DisplayNameFor(model => model.opcional3_plantilla)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.opcional3_plantilla)
+            </dd>
+        }
+
+        @if (Model.opcional4_plantilla)
+        {
+            <dt>
+            @Html.DisplayNameFor(model => model.opcional4_plantilla)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.opcional4_plantilla)
+            </dd>
+        }
+    </dl>
+</div>-->
+
+<p>
+    @Html.ActionLink("Administrar Plantillas", "AdministrarPlantillas", "Plantilla", null, htmlAttributes: new { @class = "btn btn-primary" })
+    @*<a href="~/Plantilla/AdministrarPlantillas" class="btn btn-primary btn-lg">Administrar Plantillas</a>*@
+</p>

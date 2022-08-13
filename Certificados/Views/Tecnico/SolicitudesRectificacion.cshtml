@@ -1,5 +1,5 @@
 ﻿
-@{ 
+@{
     ViewBag.Title = "Rol - Técnico";
 
     List<SelectListItem> items = (List<SelectListItem>)ViewBag.items;
@@ -7,7 +7,6 @@
 }
 
 <h3>En esta ventana podrá modificar y eliminar los registros de comerciantes autónomos del DMQ</h3>
-
 
 <div class="row">
     <div class="col-sm-12">
@@ -20,9 +19,9 @@
                             <th>Cédula</th>
                             <th>Nombres</th>
                             <th>Apellidos</th>
-                            <th>Capacitación</th>
                             <th>Institución</th>
-                            <th></th>
+                            <th>Rectificación Generada</th>
+                            <th>Opciones</th>
                         </tr>
                     </thead>
                 </table>
@@ -37,7 +36,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar Datos del Comerciante</h5>
+                <h4 class="modal-title" id="exampleModalLabel"><b>Atención de solicitudes de rectificación de datos</b></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -46,8 +45,7 @@
                 <div class="row">
                     <div class="col-sm-12">
 
-
-                        <input type="text" id="txtIdPersona" />
+                        <input type="text" id="txtIdPersona" hidden="hidden" />
                         <div class="form-group">
                             <label for="txtCedula">Cédula:</label>
                             <input type="text" class="form-control" id="txtCedula">
@@ -65,22 +63,17 @@
                             <input type="text" class="form-control" id="txtCapacitacion">
                         </div>
 
-                        <!-- ID INSTITUCION
-                        <div class="form-group">
-                        <label for="txtInstitucionID">ID_Institución:</label>
-                        <input type="text" class="form-control" id="txtInstitucionID">
-                        </div>
-                        -->
+                        @*<div class="form-group">
+                                <label for="txtInstitucionID">ID_Institución:</label>
+                                <input type="text" class="form-control" id="txtInstitucionID">
+                            </div>*@
 
                         <div class="form-group">
                             <label for="txtInstitucion">Institución:</label>
                             @Html.DropDownList("Datos", items, new { @class = "form-control" })
                         </div>
-
-
                     </div>
                 </div>
-
 
             </div>
             <div class="modal-footer">
@@ -100,7 +93,7 @@
         $(document).ready(function () {
             tabla_comerciantes = $('#tbComerciantes').DataTable({
                 "ajax": {
-                    "url": "@Url.Action("Listar","Tecnico")",
+                    "url": "@Url.Action("ListarSolicitudesRectificacion", "Tecnico")",
                     "type": "GET",
                     "dataType": "json"
                 },
@@ -108,11 +101,10 @@
                     { "data": "Cedula" },
                     { "data": "Nombres" },
                     { "data": "Apellidos" },
-                    { "data": "Capacitacion" },
                     { "data": "Institucion" },
+                    { "data": "RectificacionGenerada" },
                     { "data": "Id", "render": function (data) {
-                        return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>" +
-                            "<button class='btn btn-danger btn-sm ml-2' type='button' onclick='Eliminar(" + data + ")'><i class='fas fa-trash'></i></button>"
+                        return "<button class='btn btn-primary btn-sm' type='button' onclick='abrirModal(" + data + ")'><i class='fas fa-pen'></i></button>"
                         },
                         "orderable": false,
                         "searchable": false,
@@ -133,10 +125,12 @@
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         if (data != null) {
+                            $("#txtIdPersona").val($ID);
                             $("#txtCedula").val(data.Cedula);
                             $("#txtNombres").val(data.Nombres);
                             $("#txtApellidos").val(data.Apellidos);
                             $("#txtCapacitacion").val(data.Capacitacion);
+                            $("#txtInstitucionID").val(data.InstitucionID);
                             $("#txtInstitucion").val(data.Institucion);
                         }
                     }
@@ -144,8 +138,6 @@
             }
             $('#FormModal').modal('show');
         }
-
-
 
         function Guardar() {
             var $data = {
@@ -159,9 +151,8 @@
                 }
             }
 
-
             jQuery.ajax({
-                url: "/Tecnico/Guardar",
+                url: "/Tecnico/GuardarAtencion",
                 type: "POST",
                 data: JSON.stringify($data),
                 dataType: "json",
@@ -186,8 +177,6 @@
 
         }
 
-
-
         function Eliminar($ID) {
             if (confirm("¿Realmente desea eliminar?")) {
 
@@ -208,3 +197,4 @@
 
     </script>
 }
+

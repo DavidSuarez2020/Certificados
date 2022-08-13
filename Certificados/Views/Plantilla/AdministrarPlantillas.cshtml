@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Certificados.Models.Plantillas>
+
+@{
+    ViewBag.Title = "Administración de Plantillas";
+}
+
+<style type="text/css">
+    h2, th, td {
+        text-align: center;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<br />
+
+<p>
+    @Html.ActionLink("Regresar", "Index", "Home", null, htmlAttributes: new { @class = "btn btn-primary" })
+    @Html.ActionLink("Nueva Plantilla", "CrearPlantilla", "Plantilla", Model, htmlAttributes: new { @class = "btn btn-success" })
+</p>
+@if (!String.IsNullOrEmpty(ViewBag.Mensaje))
+{
+    <p>@ViewBag.Mensaje</p>
+}
+
+@if (Model != null)
+{
+    <table class="table">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.name)*@
+                Nombre
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.fecha_creacion)*@
+                Fecha de Creación
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.archivo_plantilla)*@
+                Archivo plantilla
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.plantilla_activa)
+                    Activa
+                </th>*@
+            <th>Datos</th>
+            <th>Opciones</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.fecha_creacion.ToString("dd/mm/yyyy"))*@
+                    @item.fecha_creacion.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.archivo_plantilla)*@
+                    @Html.ActionLink(item.archivo_plantilla, "VerPlantilla", "Plantilla", new { nombreArchivoPlantilla = item.archivo_plantilla }, htmlAttributes: new { @target = "_blank" })
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.plantilla_activa)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Datos", "SeleccionarDatos", "Plantilla", item, htmlAttributes: new { @class = "btn btn-success btn-sm" })
+                </td>
+                <td>
+                    @*@Html.ActionLink("Detalles", "MostrarDetallesPlantilla", "Plantilla", item, htmlAttributes: new { @class = "btn btn-primary btn-sm" }) |*@
+                    @Html.ActionLink("Detalles", "DetallarPlantilla", "Plantilla", new { idPlantilla = item.Id }, htmlAttributes: new { name = "detalles" }) |
+                    @Html.ActionLink("Editar", "EditarPlantilla", "Plantilla", new { idPlantilla = item.Id }, htmlAttributes: new { name = "editar" }) |
+                    @Html.ActionLink("Borrar", "BorrarPlantilla", "Plantilla", new { idPlantilla = item.Id }, htmlAttributes: new { name = "borrar" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <p>No existen plantillas que mostrar.</p>
+    <p>Para crear una plantilla, presione el botón <strong>"Nueva Plantilla"</strong></p>
+}
