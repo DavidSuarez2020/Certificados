@@ -1,0 +1,99 @@
+﻿@model Certificados.Models.Plantillas
+
+@{
+    ViewBag.Title = "PLANTILLA: Detalles";
+}
+
+<style type="text/css">
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<div class="all-content">
+    <h2>@ViewBag.Title</h2>
+    <br />
+
+    <div>
+        <p>
+            La plantilla <strong>"@Model.name"</strong> fue creada el <strong>@Model.fecha_creacion.ToString("dd/MM/yyyy")</strong> y
+            contiene los siguientes campos obligatorios.
+        </p>
+        <ul>
+            <li><b>NOMBRES</b></li>
+            <li><b>APELLIDOS</b></li>
+            <li><b>CURSO</b></li>
+            <li><b>FECHA</b></li>
+            <li><strong>ARCHIVO DE LA PLANTILLA:</strong> "@Model.archivo_plantilla".</li>
+
+        </ul>
+    </div>
+
+    <p>A continuación se muestran los campos opcionales que están habilitados para esta plantilla:</p>
+    <dl class="dl-horizontal">
+        <dt>
+            @*@Html.DisplayNameFor(model => model.opcional1_plantilla)*@
+            Campo opcional 1:
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.opcional1_plantilla)*@
+            @if (Model.opcional1_plantilla)
+            {
+                <span>Sí</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </dd>
+        <dt>
+            @*@Html.DisplayNameFor(model => model.opcional2_plantilla)*@
+            Campo opcional 2:
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.opcional2_plantilla)*@
+            @if (Model.opcional2_plantilla)
+            {
+                <span>Sí</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </dd>
+        <dt>
+            @*@Html.DisplayNameFor(model => model.opcional3_plantilla)*@
+            Campo opcional 3:
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.opcional3_plantilla)*@
+            @if (Model.opcional3_plantilla)
+            {
+                <span>Sí</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </dd>
+        <dt>
+            @*@Html.DisplayNameFor(model => model.opcional4_plantilla)*@
+            Campo opcional 4:
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.opcional4_plantilla)*@
+            @if (Model.opcional4_plantilla)
+            {
+                <span>Sí</span>
+            }
+            else
+            {
+                <span>No</span>
+            }
+        </dd>
+    </dl>
+    <hr />
+</div>
+<p>
+    @Html.ActionLink("Regresar", "AdministrarPlantillas", "Plantilla", null, htmlAttributes: new { @class = "btn btn-primary" })
+</p>

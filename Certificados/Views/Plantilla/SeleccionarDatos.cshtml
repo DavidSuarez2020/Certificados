@@ -1,0 +1,69 @@
+﻿@model Certificados.Models.Plantillas
+
+@{
+    ViewBag.Title = "DATOS: Seleccionar Datos";
+}
+
+<style type="text/css">
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<div>
+    <h2>@ViewBag.Title</h2>
+    <br />
+    <h4>Plantilla en uso: "@Model.name"</h4>
+    <br />
+
+    <p>
+        En esta página, usted puede cargar los datos que aparecerán en los documentos a generarse utilizando la plantilla seleccionada.
+        Para hacerlo deberá utilizar el formato específico en un archivo CVS. Una vez que los datos sean cargados al sistema, los documentos
+        se generarán de forma automática.
+    </p>
+    <p>
+        <strong>IMPORTANTE:</strong> La información cargada en el archivo CVS debe corresponder con los campos habilitados en la plantilla
+        subida en el sistema. En caso que existan datos sin que los campos estén habilitados, estos no aparecerán en los documentos al generarse.
+        Por otra parte, si existiesen campos que estuvieran habilitados en la plantilla pero no existan los datos correspondientes en el archivo
+        CVS, estos no aparecerán en el documento a generarse o se presentará un "0" en su lugar.
+    </p>
+    <p>
+        Para continuar seleccione el archivo CVS y presione el botón <strong>"Subir archivo"</strong>.
+    </p>
+
+    @if (!String.IsNullOrEmpty(ViewBag.Mensaje))
+    {
+        <p>
+            <strong>NOTA:</strong> @ViewBag.Mensaje
+        </p>
+    }
+
+    @using (@Html.BeginForm("CargarDatos", "Plantilla", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-11">
+                    @Html.HiddenFor(m => m.Id)
+                </div>
+                <div class="col-md-offset-1 col-md-11">
+                    @Html.TextBox("file", "", new { type = "file", accept = ".csv" })
+                    @Html.ValidationMessage("file", "*Debe seleccionar un archivo en formato CSV", new { @class = "text-danger" })
+                </div>
+            </div><br />
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-11">
+                    <input type="submit" value="Subir archivo" class="btn btn-primary" />
+                    <a href="~/Plantilla/AdministrarPlantillas" class="btn btn-danger">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

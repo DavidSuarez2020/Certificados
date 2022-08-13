@@ -1,0 +1,46 @@
+﻿@model Certificados.Models.Plantillas
+
+@{
+    ViewBag.Title = "Datos Cargados";
+}
+
+<style type="text/css">
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<div>
+    <h2>@ViewBag.Title</h2>
+    <br />
+    <h4>Plantilla en uso: "@Model.name"</h4>
+    <br />
+
+    <p>
+        Se ha(n) cargado exitosamente <strong>@ViewBag.CantidadDatos</strong> dato(s) y los documentos correspondientes se han generado.
+    </p>
+    <p>
+        Presione el botón <strong>"Descargar"</strong> para guardar los documentos generados. En caso que no los descargue en este momento,
+        podrá descargarlos en el sección <strong>"Documentos"</strong> en la página de inicio.
+    </p>
+    <br />
+
+    <div class="col-md-offset-1 col-md-11">
+        <p>
+            @if (@ViewBag.CantidadDatos > 1)
+            {
+                @Html.ActionLink("Descargar", "DescargarZipDocumentos", new { datosIdString = ViewBag.DatosIdString }, htmlAttributes: new { @class = "btn btn-success" })
+            }
+            else
+            {
+                @Html.ActionLink("Descargar", "DescargarDocumento", new { nombreArchivo = ViewBag.NombreArchivo }, htmlAttributes: new { @class = "btn btn-success" })
+            }
+            @Html.ActionLink("Inicio", "AdministrarPlantillas", "Plantilla", null, htmlAttributes: new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>
+<br />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

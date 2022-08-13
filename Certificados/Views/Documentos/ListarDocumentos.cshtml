@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Certificados.Models.Documentos>
+
+@{
+    ViewBag.Title = "Documentos Generados";
+}
+
+<style type="text/css">
+    h2, th, td {
+        text-align: center;
+    }
+</style>
+
+<div>
+    <h2>@ViewBag.Title</h2>
+    <br />
+    <p>
+        @Html.ActionLink("Regresar", "Index", "Home", null, htmlAttributes: new { @class = "btn btn-primary" })
+    </p>
+
+    @if (Model != null)
+    {
+        if (String.IsNullOrEmpty(ViewBag.Mensaje))
+        {
+            @ViewBag.Mensaje
+            <br />
+        }
+
+        <table class="table">
+            <tr>
+                @*<th>
+                            Seleccionar
+                    </th>*@
+                <th>
+                    @*@Html.DisplayNameFor(model => model.fecha_generado)*@
+                    Fecha de creación
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.ruta_archivo)*@
+                    Archivo
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.codigo_verificacion)*@
+                    Código de verificación
+                </th>
+                <th>Opciones</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td>
+                                @Html.CheckBox(item.Id.ToString(), item.Id.ToString())
+                                <input type="checkbox" id="@item.Id" name="docGenerado" class="docGenerado" value="@item.Id" />
+                        </td>*@
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.fecha_generado)*@
+                        @item.fecha_generado.ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.ruta_archivo)*@
+                        @Html.ActionLink(item.ruta_archivo, "VerDocumento", "Documentos", new { rutaArchivo = item.ruta_archivo }, htmlAttributes: new { @target = "_blank" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.codigo_verificacion)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Ver detalles", "DetallarDocumento", "Documentos", new { idDoc = item.Id }, htmlAttributes: new { name = "detalles" })
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <hr />
+        <div>
+            @*@Html.ActionLink("Regresar", "Index", "Home", null, htmlAttributes: new { @class = "btn btn-primary" })*@
+            @*@Html.ActionLink("Descargar", "DescargarZipDocumentos", "Documentos", htmlAttributes: new { @id = "descargar", @class = "btn btn-success" })*@
+            @*Html.ActionLink("Descargar", "DescargarZipDocumentos", "Documentos", new { idDocList = "prueba" }, htmlAttributes: new { @id = "descargar", @class = "btn btn-success" })*@
+            @*<input type="button" id="descargar" class="btn btn-success" value="Descargar" />*@
+            @*<a href="~/Documentos/DescargarZipDocumentos/" id="descargar" class="btn btn-success" target="_blank">Descargar</a>*@
+        </div>
+    }
+    else
+    {
+        <p>Por el momento, no existen documentos generados para mostrar.</p>
+        <br />
+        <a href="~/Home/Index" class="btn btn-primary">Regresar</a>
+        <br />
+    }
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#descargar').click(function () {
+                var idCheckedValues = [];
+                $(".docGenerado:checked").each(function () {
+                    idCheckedValues.push($(this).val());
+                });
+
+                if (idCheckedValues.length > 0) {
+                    var param = {
+                        'docsIdArray': idCheckedValues
+                    };
+
+                    $.ajax({
+                        url: '@Url.Action("Descargar", "Documentos")',
+                        data: JSON.stringify(param),
+                        type: "POST",
+                        dataType: "json",
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            alert("success1");
+                            /*var response = JSON.parse(data);*/
+                            window.location = '/Documentos/DescargarZipDocumentos/' + data.lista;
+                            alert("success2");
+                        },
+                        error: function (data) {
+                            alert("Error" + data.responseText);
+                        }
+                    });
+                } else {
+                    alert("Para iniciar la descarga, debe seleccionar al menos una casilla.");
+                    return false;
+                }
+
+            })
+        });
+    </script>
+}

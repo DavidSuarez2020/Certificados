@@ -29,5 +29,9 @@ namespace Certificados.Models
         public virtual DbSet<Certificados> Certificados { get; set; }
         public virtual DbSet<Institucion> Institucion { get; set; }
         public virtual DbSet<Rectificaciones> Rectificaciones { get; set; }
+        public virtual DbSet<Datos> Datos { get; set; }
+        public virtual DbSet<Documentos> Documentos { get; set; }
+        public virtual DbSet<Plantilla_Dato> Plantilla_Dato { get; set; }
+        public virtual DbSet<Plantillas> Plantillas { get; set; }
     }
 }
