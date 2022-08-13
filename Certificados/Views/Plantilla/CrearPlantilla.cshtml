@@ -1,0 +1,123 @@
+﻿@model Certificados.Models.Plantillas
+
+@{
+    ViewBag.Title = "PLANTILLA: Crear nueva";
+}
+
+<style type="text/css">
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<div>
+    <h2>@ViewBag.Title</h2>
+    <br />
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <p class="text-danger"><b>AVISO: </b>@ViewBag.Mensaje<span>.</span></p>
+    }
+
+    <h4>Campos obligatorios:</h4>
+    <p>Los siguientes campos necesariamente estarán en la plantilla y deberán constar en el archivo con los datos. Estos campos son:</p>
+    <ul>
+        <li><b>NOMBRES:</b> uno o dos nombres de cada persona.</li>
+        <li><b>APELLIDOS:</b> uno o dos apellidos de cada persona.</li>
+        <li><b>CURSO:</b> nombre del curso o taller al que hace referencia.</li>
+        <li><b>FECHA:</b> en la cual se realizo el curso o taller al que hace referencia.</li>
+        @*<li><b>ARCHIVO:</b> plantilla en formato PDF.</li>*@
+    </ul>
+    <p><strong>NOTA:</strong> Para continuar deberá desingar un nombre a su plantilla y cargar el archivo para guardar el registro. </p>
+</div>
+
+@using (@Html.BeginForm("CargarPlantilla", "Plantilla", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>Nombre de la plantilla:</b>
+            </div>
+            <div class="col-md-10">
+                <div>
+                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", @minlength = "1", @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>Cargar archivo:</b>
+            </div>
+            <div class="col-md-10">
+                <div>
+                    @Html.TextBox("file", "", new { type = "file", accept = "application/pdf" })
+                    @if (ViewBag.MesajeArchivo != null && ViewBag.MesajeArchivo == true)
+                    {
+                        @Html.ValidationMessage("file", "*Debe seleccionar un archivo en formato PDF", new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <h4>Campos opcionales:</h4>
+        <p>Para configurar su plantilla de mejor manera, puede agregar campos adicionales. Marque en la casilla hasta cuatro campos adicionales.</p>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.opcional1_plantilla, "Campo opcional 1:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.opcional1_plantilla)
+                    @Html.ValidationMessageFor(model => model.opcional1_plantilla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.opcional2_plantilla, "Campo opcional 2:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.opcional2_plantilla)
+                    @Html.ValidationMessageFor(model => model.opcional2_plantilla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.opcional3_plantilla, "Campo opcional 3:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.opcional3_plantilla)
+                    @Html.ValidationMessageFor(model => model.opcional3_plantilla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.opcional4_plantilla, "Campo opcional 4:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.opcional4_plantilla)
+                    @Html.ValidationMessageFor(model => model.opcional4_plantilla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear plantilla" class="btn btn-primary" />
+                <a href="~/Plantilla/AdministrarPlantillas" class="btn btn-danger">Cancelar</a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

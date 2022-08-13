@@ -1,0 +1,134 @@
+﻿@model Certificados.Models.Plantillas
+
+@{
+    ViewBag.Title = "PLANTILLA: Editar campos";
+}
+
+<style type="text/css">
+    h2 {
+        text-align: center;
+    }
+</style>
+
+<div>
+    <h2>@ViewBag.Title</h2>
+    <br />
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <p class="text-danger"><b>AVISO: </b>@ViewBag.Mensaje<span>.</span></p>
+    }
+
+    <p>Los siguientes campos no pueden ser editados ya que son obligatorios en la plantilla:</p>
+    <ul>
+        <li><b>NOMBRES:</b> uno o dos nombres de cada persona.</li>
+        <li><b>APELLIDOS:</b> uno o dos apellidos de cada persona.</li>
+        <li><b>CURSO:</b> nombre del curso o taller al que hace referencia.</li>
+        <li><b>FECHA:</b> en la cual se realizo el curso o taller al que hace referencia.</li>
+    </ul>
+</div>
+<br />
+
+@using (@Html.BeginForm("GuardarPlantillaEditada", "Plantilla", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.fecha_creacion)
+        @Html.HiddenFor(model => model.nombres_plantilla)
+        @Html.HiddenFor(model => model.apellidos_plantilla)
+        @Html.HiddenFor(model => model.curso_plantilla)
+        @Html.HiddenFor(model => model.fecha_plantilla)
+        @Html.HiddenFor(model => model.plantilla_activa)
+
+        <p>Los campos de esta plantilla que pueden ser editados son:</p>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.name, "Nombre de la plantilla", htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <div class="col-md-2">
+                <b>Nombre de la plantilla</b>
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <div class="col-md-2">
+                <b>Archivo cargado:</b>
+            </div>
+            <div class="col-md-10">
+                <span>@Model.archivo_plantilla</span>
+                @*@Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                <b>Nuevo archivo:</b>
+            </div>
+            <div class="col-md-10">
+                <div>
+                    @Html.TextBox("file", "", new { type = "file", accept = "application/pdf" })
+                    @Html.ValidationMessage("file", "Si carga un nuevo archivo PDF, el anterior será eliminado")
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.opcional1_plantilla, "Campo opcional 1:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.opcional1_plantilla)
+                    @Html.ValidationMessageFor(model => model.opcional1_plantilla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.opcional2_plantilla, "Campo opcional 2:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.opcional2_plantilla)
+                    @Html.ValidationMessageFor(model => model.opcional2_plantilla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.opcional3_plantilla, "Campo opcional 3:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.opcional3_plantilla)
+                    @Html.ValidationMessageFor(model => model.opcional3_plantilla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.opcional4_plantilla, "Campo opcional 4:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.opcional4_plantilla)
+                    @Html.ValidationMessageFor(model => model.opcional4_plantilla, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar cambios" class="btn btn-primary" />
+                <a href="~/Plantilla/AdministrarPlantillas" class="btn btn-danger">Cancelar</a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

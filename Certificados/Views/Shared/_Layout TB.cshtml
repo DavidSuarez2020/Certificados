@@ -28,14 +28,18 @@
                     {
                         <li>@Html.ActionLink("Administrar Roles", "Index", "RolesAdmin")</li>
                         <li>@Html.ActionLink("Administrar Usuarios", "Index", "UsersAdmin")</li>
+                        <li>@Html.ActionLink("Plantillas", "AdministrarPlantillas", "Plantilla")</li>
+                        <li>@Html.ActionLink("Documentos", "ListarDocumentos", "Documentos")</li>
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Técnico"))
                     {
+                        <li>@Html.ActionLink("Solicitudes de rectificación", "SolicitudesRectificacion", "Tecnico")</li>
                         <li>@Html.ActionLink("Modificar Comerciantes", "Index", "Tecnico")</li>
                     }
                     @if (Request.IsAuthenticated && User.IsInRole("Consulta"))
                     {
                         <li>@Html.ActionLink("Módulo de Consultas", "Index", "Consulta")</li>
+                        <li>@Html.ActionLink("Reportes", "ReporteInstitucion", "Consulta")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
